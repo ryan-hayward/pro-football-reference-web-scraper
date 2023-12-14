@@ -104,7 +104,6 @@ def qb_game_log(soup: BeautifulSoup) -> pd.DataFrame:
     }  # type: dict
 
     table_rows = soup.find('tbody').find_all('tr')
-    print(table_rows)
 
     # ignore inactive or DNP games
     to_ignore = []

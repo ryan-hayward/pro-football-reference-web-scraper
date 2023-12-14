@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
+import time
 
 VALID_STATS = ['passing', 'scrimmage', 'kicking'] # valid statistics to request for
 VALID_POSITIONS = ['QB', 'RB', 'WR', 'TE', 'K'] # valid positions in databasee
@@ -91,13 +92,21 @@ A counter has been included to track the # of requests made in a given run
     
     Returns:
         BeautifulSoup object representing parsed html
+    
+    @NOTE I have added sleep() in order to prevent session locking from PFR. These limitations are put in
+    to maintain site performance.
 '''
 def get_soup(request_url: str) -> BeautifulSoup:
+    global REQUEST_COUNTER
+    # if request counter is already at 20, sleep program for sixty seconds
+    if REQUEST_COUNTER >= 20:
+        time.sleep(60)
+        REQUEST_COUNTER = 0
     # store response from request
     response = requests.get(request_url)
     # update the request counter
-    global REQUEST_COUNTER
     REQUEST_COUNTER += 1
+    print(REQUEST_COUNTER)
     # return soup
     return BeautifulSoup(response.text, 'html.parser')
 
@@ -176,7 +185,7 @@ def get_eligible_positions(stat_type: str) -> list:
 
 
 def main():
-    print(get_eligible_players('kicking', 2022).to_string())
+    print(get_eligible_players('scrimmage', 2022).to_string())
     print(REQUEST_COUNTER)
 
 
