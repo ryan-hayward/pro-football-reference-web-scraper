@@ -18,8 +18,10 @@ A function that takes statistic type and year as arguments and returns a pandas 
         year (int): year in which the statistics were accumulated
 
     Returns:
-        pandas.Dataframe with the following attributes:
-        playerID (str), name (str), position (str), age (int)
+        pandas.Dataframe with the following attributes: playerID (str), name (str), position (str), 
+        age (int), season (int)
+        counter (int): number of times that PFR has been scraped within the minute. Will reset and pause
+        for the next 60 seconds after 20 requests have been made
 
 '''
 def get_eligible_players(stat_type: str, season: int) -> pd.DataFrame:
