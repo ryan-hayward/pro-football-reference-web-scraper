@@ -63,6 +63,10 @@ def get_eligible_players(stat_type: str, season: int) -> pd.DataFrame:
         if len(position) == 0:
             href = table_rows[i].find('a').get('href')
             position = get_player_position(href)
+        
+        # if position is FB, convert to RB
+        if position == 'FB':
+            position = 'RB'
 
         # if the player is not in an eligible position, ignore. Else, add line to the dataframe
         if position not in eligible_positions:
@@ -79,7 +83,7 @@ def get_eligible_players(stat_type: str, season: int) -> pd.DataFrame:
             data['age'].append(int(table_rows[i].find('td', {'data-stat': 'age'}).text))
             data['season'].append(season)
     # return data frame
-    return pd.DataFrame(data=data)
+    return [pd.DataFrame(data=data), REQUEST_COUNTER]
 
 
 
@@ -106,7 +110,6 @@ def get_soup(request_url: str) -> BeautifulSoup:
     response = requests.get(request_url)
     # update the request counter
     REQUEST_COUNTER += 1
-    print(REQUEST_COUNTER)
     # return soup
     return BeautifulSoup(response.text, 'html.parser')
 
@@ -176,7 +179,7 @@ def get_eligible_positions(stat_type: str) -> list:
     if stat_type == "passing":
         positions.append('QB')
     elif stat_type == "scrimmage":
-        positions.extend(('RB', 'WR', 'TE'))
+        positions.extend(('RB', 'WR', 'TE', 'FB'))
     elif stat_type == "kicking":
         positions.append('K')
     # return eligible positions
@@ -185,8 +188,7 @@ def get_eligible_positions(stat_type: str) -> list:
 
 
 def main():
-    print(get_eligible_players('scrimmage', 2022).to_string())
-    print(REQUEST_COUNTER)
+    print(get_eligible_players('scrimmage', 2014)[0].to_string())
 
 
 
