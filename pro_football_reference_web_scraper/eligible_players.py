@@ -4,7 +4,7 @@ import pandas as pd
 import time
 
 VALID_STATS = ['passing', 'scrimmage', 'kicking'] # valid statistics to request for
-VALID_POSITIONS = ['QB', 'RB', 'WR', 'TE', 'K'] # valid positions in databasee
+VALID_POSITIONS = ['QB', 'RB', 'FB' 'WR', 'TE', 'K'] # valid positions in databasee
 REQUEST_COUNTER = 0 # count requests
 
 '''
@@ -65,10 +65,6 @@ def get_eligible_players(stat_type: str, season: int) -> pd.DataFrame:
         if len(position) == 0:
             href = table_rows[i].find('a').get('href')
             position = get_player_position(href)
-        
-        # if position is FB, convert to RB
-        if position == 'FB':
-            position = 'RB'
 
         # if the player is not in an eligible position, ignore. Else, add line to the dataframe
         if position not in eligible_positions:
@@ -181,7 +177,7 @@ def get_eligible_positions(stat_type: str) -> list:
     if stat_type == "passing":
         positions.append('QB')
     elif stat_type == "scrimmage":
-        positions.extend(('RB', 'WR', 'TE', 'FB'))
+        positions.extend(('RB', 'FB', 'WR', 'TE', 'FB'))
     elif stat_type == "kicking":
         positions.append('K')
     # return eligible positions
