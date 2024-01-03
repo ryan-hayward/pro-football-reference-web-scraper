@@ -5,7 +5,7 @@ import time
 
 VALID_POSITIONS = ['QB', 'RB', 'FB', 'WR', 'TE', 'K']
 REQUEST_COUNTER = 0
-ELEMENT_TABLE = pd.read_csv('element_mapping.csv')
+ELEMENT_TABLE = pd.read_csv('./data/field_player_mapping.csv')
 
 '''
 @NOTE: ENHANCEMENT of player_game_log.py, written by Michael Kim
@@ -108,7 +108,7 @@ def get_soup(request_url: str) -> BeautifulSoup:
 Gets the complete season game log for a field player 
 '''
 def field_player_game_log(soup: BeautifulSoup) -> pd.DataFrame:
-    # Adjusted stats for all QB stats as seen relevant
+
     data = {
         # General Game Log Information
         'date': [],
@@ -217,13 +217,16 @@ def field_player_game_log(soup: BeautifulSoup) -> pd.DataFrame:
     return pd.DataFrame(data=data)
 
 
+'''
+@TODO come back and add for kickers
+'''
 def kicker_game_log(soup: BeautifulSoup):
     return 0
 
 
 def main():
-    df = get_player_game_log('John Kuhn', 'FB', 2010)
-    df.to_csv('test_data.csv', sep='\t', index=False)
+    df = get_player_game_log('Anthony Fasano', 'TE', 2010)
+    df.to_csv('./data/test_data.csv', sep='\t', index=False)
 
 if __name__ == '__main__':
     main()

@@ -1,5 +1,5 @@
 import sys
-import player_game_log as p
+from pro_football_reference_web_scraper import player_game_log as p
 
 '''
 The second argument (sys.argv[1]) is designed to contain the indicator for which method we would like to call
